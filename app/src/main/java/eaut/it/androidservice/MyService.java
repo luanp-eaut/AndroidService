@@ -14,27 +14,34 @@ public class MyService extends Service {
     private final IBinder mBinder = new MyBinder();
 
     @Override
+    public void onCreate() {
+        super.onCreate();
+        player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
+        player.setLooping(true);
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        run();
+        player.start();
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stop();
+        player.stop();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        run();
+        player.start();
         return mBinder;
     }
 
     @Override
     public boolean onUnbind(Intent intent) {
-        stop();
+        player.start();
         return super.onUnbind(intent);
     }
 
@@ -42,17 +49,5 @@ public class MyService extends Service {
         MyService getService() {
             return MyService.this;
         }
-    }
-
-
-    private void run() {
-        if (player == null)
-            player = MediaPlayer.create(this, Settings.System.DEFAULT_RINGTONE_URI);
-        player.setLooping(true);
-        player.start();
-    }
-
-    private void stop(){
-        if(player!=null) player.stop();
     }
 }
