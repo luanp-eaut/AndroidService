@@ -14,7 +14,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class Activity2 extends AppCompatActivity {
-    MyService mService;
+    DemoService mService;
     Boolean mIsBound;
 
     @Override
@@ -45,14 +45,14 @@ public class Activity2 extends AppCompatActivity {
     }
 
     private void bindService(){
-        Intent serviceBindIntent =  new Intent(this, MyService.class);
+        Intent serviceBindIntent =  new Intent(this, DemoService.class);
         bindService(serviceBindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder iBinder) {
-            MyService.MyBinder binder = (MyService.MyBinder) iBinder;
+            DemoService.MyBinder binder = (DemoService.MyBinder) iBinder;
             mService = binder.getService();
             mIsBound = true;
         }
